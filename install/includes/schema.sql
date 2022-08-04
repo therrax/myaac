@@ -3,7 +3,7 @@ SET @myaac_database_version = 32;
 CREATE TABLE `myaac_account_actions`
 (
 	`account_id` INT(11) NOT NULL,
-	`ip` INT(10) UNSIGNED NOT NULL DEFAULT 0,
+	`ip` VARCHAR(16) NOT NULL default '0.0.0.0',
 	`ipv6` BINARY(16) NOT NULL DEFAULT 0,
 	`date` INT(11) NOT NULL DEFAULT 0,
 	`action` VARCHAR(255) NOT NULL DEFAULT '',
@@ -51,7 +51,7 @@ CREATE TABLE `myaac_changelog`
 INSERT INTO `myaac_changelog` (`id`, `type`, `where`, `date`, `body`, `hidden`) VALUES (1, 3, 2, UNIX_TIMESTAMP(), 'MyAAC installed. (:', 0);
 
 CREATE TABLE `myaac_charbazaar` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
   `account_old` int(11) NOT NULL,
   `account_new` int(11) NOT NULL,
   `player_id` int(11) NOT NULL,
@@ -65,7 +65,7 @@ CREATE TABLE `myaac_charbazaar` (
 ) ENGINE=InnoDB DEFAULT CHARACTER SET=utf8;
 
 CREATE TABLE `myaac_charbazaar_bid` (
-  `id` int(11) NOT NULL,
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
   `account_id` int(11) NOT NULL,
   `auction_id` int(11) NOT NULL,
   `bid` int(11) NOT NULL,
@@ -177,10 +177,9 @@ INSERT INTO `myaac_menu` (`template`, `name`, `link`, `category`, `ordering`) VA
 INSERT INTO `myaac_menu` (`template`, `name`, `link`, `category`, `ordering`) VALUES ('tibiacom', 'Creatures', 'creatures', 5, 0);
 INSERT INTO `myaac_menu` (`template`, `name`, `link`, `category`, `ordering`) VALUES ('tibiacom', 'Spells', 'spells', 5, 1);
 INSERT INTO `myaac_menu` (`template`, `name`, `link`, `category`, `ordering`) VALUES ('tibiacom', 'Commands', 'commands', 5, 2);
-INSERT INTO `myaac_menu` (`template`, `name`, `link`, `category`, `ordering`) VALUES ('tibiacom', 'Exp Stages', 'experienceStages', 5, 3);
-INSERT INTO `myaac_menu` (`template`, `name`, `link`, `category`, `ordering`) VALUES ('tibiacom', 'Gallery', 'gallery', 5, 4);
-INSERT INTO `myaac_menu` (`template`, `name`, `link`, `category`, `ordering`) VALUES ('tibiacom', 'Server Info', 'serverInfo', 5, 5);
-INSERT INTO `myaac_menu` (`template`, `name`, `link`, `category`, `ordering`) VALUES ('tibiacom', 'Experience Table', 'experienceTable', 5, 6);
+INSERT INTO `myaac_menu` (`template`, `name`, `link`, `category`, `ordering`) VALUES ('tibiacom', 'Gallery', 'gallery', 5, 3);
+INSERT INTO `myaac_menu` (`template`, `name`, `link`, `category`, `ordering`) VALUES ('tibiacom', 'Server Info', 'serverInfo', 5, 4);
+INSERT INTO `myaac_menu` (`template`, `name`, `link`, `category`, `ordering`) VALUES ('tibiacom', 'Experience Table', 'experienceTable', 5, 5);
 /* MENU_CATEGORY_CHARBAZAAR tibiacom */
 INSERT INTO `myaac_menu` (`template`, `name`, `link`, `category`, `ordering`) VALUES ('tibiacom', 'Current Auctions', 'currentcharactertrades', 7, 0);
 INSERT INTO `myaac_menu` (`template`, `name`, `link`, `category`, `ordering`) VALUES ('tibiacom', 'Auction History', 'pastcharactertrades', 7, 1);
@@ -366,3 +365,7 @@ CREATE TABLE `myaac_weapons`
 	`vocations` VARCHAR(100) NOT NULL DEFAULT '',
 	PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARACTER SET=utf8;
+
+ALTER TABLE `server_config` ADD `timestamp` TIMESTAMP on update CURRENT_TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP AFTER `value`;
+
+ALTER TABLE `accounts` CHANGE `name` `name` VARCHAR(32) CHARACTER SET utf8 COLLATE utf8_general_ci NULL;
